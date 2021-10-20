@@ -1,0 +1,108 @@
+
+<html>
+
+  <head>
+    <meta charset="utf-8"/>
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head> 
+
+  <body>
+    <a class="myAtag" href="/setgroup"> Premium [Set Group] </a>
+    <a class="myAtag" href="/redeem"> Redeem </a>
+    <div class="head-div field">
+      <textarea id="a7a" class="chat" placeholder="Name" name="Developer</>"></textarea>
+       <!-- <label for="name" class="message">Type Something</label> -->
+
+   </div>  
+
+      <button class="next" id="test" onclick="myFunc1()" onchange="test()">
+set
+    </button>
+      <button class="next" id="tests" onclick="myFunc2()" onchange="test()">
+join
+    </button>
+      <button class="next" id="testss" onclick="myFunc3()" onchange="test()">
+send
+    </button>
+      <textarea readonly class="test" id="name">
+        
+        </textarea>
+        <br>
+
+            <h1 id="des">
+        
+        </h1>
+      <h1 id="cool">
+        
+        </h1>
+
+
+  </body>
+<button id= "linked" location.href="https://apigroup.glitch.me/chat"></button>
+    <script>
+      var names = document.getElementById("name");
+let tokens = []
+
+   function myFunc1() {
+      var myInputs = document.getElementById("a7a").value;
+if(tokens.includes(myInputs)) return swal('Error', 'You Have already token..', 'error')
+let buf = myInputs
+let string = buf.toString('utf8')
+if(!string) {
+tokens = []
+names.innerHTML = ``
+return swal('success', 'Done Reset All data', 'success')
+}
+let tokensadd = []
+let C = 1
+for (let acString of string.split("\n")){try{
+tokens.unshift({token: acString})
+tokensadd.unshift({token: acString})
+C++
+}catch {}}
+
+let msg = ``
+for(const data of tokens){
+msg = msg + `\nToken: ${data.token}`
+}
+
+names.innerHTML = msg + `\nYou Have ${tokens.length} Token`
+swal('success', 'Done Add ' + tokensadd.length + ' Token!', 'success')
+    }
+
+   function myFunc2() {
+if(tokens.length < 1) return swal('Error', 'No Tokens To Edit!', 'error')
+ swal("Enter Code Invite!", {
+  content: "input",
+}).then(invite =>{
+let link = invite ? invite.split("https://").join("").split("http://").join("").split("discord.gg/").join("").split("discordapp.gg/").join("") : null
+
+fetch(('/join') , {method: 'post', body: JSON.stringify({"tokens": tokens, "link": link}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let json = await one.json();
+swal('success', json.message, 'success')
+})
+ })
+   }
+   function myFunc3() {
+if(tokens.length < 1) return swal('Error', 'No Tokens To Edit!', 'error')
+ swal("Enter Message!", {
+  content: "input",
+}).then(msg =>{
+if(!msg) msg = 'Hi everyone'
+ swal("Enter Room ID!", {
+  content: "input",
+}).then(room =>{
+if(!room) return swal('Error', 'Enter ID Room!', 'error')
+fetch(('/message') , {method: 'post', body: JSON.stringify({"tokens": tokens, "message": msg, "room": room}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let json = await one.json();
+swal('success', json.message, 'success')
+ })
+ })
+ })
+   }
+  
+  </script>
+</html>

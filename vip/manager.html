@@ -1,0 +1,58 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>use Redeem Code!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <style>
+
+</style>
+  </head>
+  <body>
+    <div class="head-div field">
+    </div>  
+      <h1 id="code"></h1>      
+    <h1 id="password">
+        <h1 style="color:white; font-size:30px;">Password: xxxx</h1> <button class="edit1" onclick="location.href='https://apigroup.glitch.me/vip/manager/edit-password'">Edit</button>
+    </h1>
+
+<button class="edit" onclick="location.href='https://apigroup.glitch.me/vip/manager/edit-ip' ">
+       Edit
+    </button>
+      <h1 id="ip"></h1> 
+      <h1 id="joined"></h1>
+      <h1 id="sub"></h1>
+
+    <script>
+ 
+    var code = document.getElementById("code"); 
+    var ip = document.getElementById("ip"); 
+    var joined = document.getElementById("joined"); 
+    var sub = document.getElementById("sub"); 
+fetch(('https://apigroup.glitch.me/api/get-code/') , {method: 'get', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ress =>{
+let json = await ress.json();
+let ips = json.ip
+if(ips === "none") { 
+  ips = "None"
+};
+
+
+if(json.message === "code is not find") return window.location = "https://apigroup.glitch.me/vip/"
+if(json.message !== "code is not find"){
+let number = 1
+let subs = json.premium
+if(subs === "Free") number = 1
+if(subs === "Premium") number = 1
+if(subs === "Premium Do") number = 2
+if(subs === "Family Premium") number = 6
+code.innerHTML = "Code: " + json.code
+ip.innerHTML = "IP: " + ips
+joined.innerHTML = "joined: " + json.join + "/" + number
+sub.innerHTML = "Sub: " + subs
+}else{
+sub.innerHTML = "FAILED JOIN"
+}
+})
+
+
+      </script>
+</body></html>

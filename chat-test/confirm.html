@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head>
+  <body>
+    <div class="head-div field">
+    <br><br>
+      <input id="a7a" type="textarea" class="input-form" placeholder="" name="Code"/>
+      <label for="name" class="label-form">Type Code</label>
+      <br><br>
+      <br>
+
+      <button class="wtf" id="test" onclick="myFunc1()">
+        Next
+    </button>
+      <br><br>
+      <h1 id="answer">
+        
+        </h1>
+            <h1 id="question">
+        
+        </h1>
+      <h1 id="error">
+        
+        </h1>
+      <h1 id="x">
+        
+        </h1>
+      <h1 id="tmam">
+        
+        </h1>
+    </div>
+  </body>
+    <script>
+      var question = document.getElementById("question");
+      question.innerHTML = "Note: confirm = get your token and any data for you!"
+
+   function myFunc1() {
+
+      var myInput = document.getElementById("a7a").value;
+      var answer = document.getElementById("answer");
+      var error = document.getElementById("error");
+      var x = document.getElementById("x");
+      var tmam = document.getElementById("tmam");
+if(!myInput) return answer.innerHTML = "Enter Channel!"
+var able = true
+var me;
+var error = ``
+fetch(('/api/data/@me') , {method: 'GET', headers: {'authorization': localStorage.getItem('token'),'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).catch(err =>{
+able = false
+error = err
+}).then(async res =>{
+if(!able) return swal("Error", "Internet connection failed\n" + error, "error")
+  let json = await res.json();
+if(json.message === "No Login"){
+localStorage.removeItem('token');
+window.location = "/login"
+}
+answer.innerHTML = `Connection..`
+wait = false
+if(json.message === "No Login") datas = false
+if(json.message === "No Login") return swal('Error', 'Failed Login', 'error')
+if(json.message === 'This account has been disabled. Please check your e-mail.'){
+ window.location = "https://apigroup.glitch.me/logout/"
+me = { username: 'disabled', discriminator: 'disabled' }
+ return swal('Error', 'This account has been disabled. Please check your e-mail.', 'error')
+}
+me = {username: json.username, discriminator: json.discriminator, token: json.token}
+answer.innerHTML = `Connection.`
+ 
+fetch(('https://apigroup.glitch.me/api/confirm/') , {method: 'post', body: JSON.stringify({"confirm": myInput}), headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+
+  let ones = await one.json();
+if(ones.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+  answer.innerHTML = ones.message
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+})
+})
+    }
+  
+
+  </script>
+</html>

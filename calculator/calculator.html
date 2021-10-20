@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+  </head>
+  <body>
+    <a class="myAtag" href="/setgroup"> Premium [Set Group] </a>
+    <a class="myAtag" href="/redeem"> Redeem </a>
+    <div class="head-div field">
+      <input id="a7a" type="input" class="input-form" placeholder="Name" name="calculator"/>
+      <label for="name" class="label-form">Type calculator</label>
+   </div>  
+      <br>
+      <button class="wtf" id="test" onclick="myFunc1()">
+        Next
+    </button>
+      <br><br>
+      <h1 id="answer">
+        
+        </h1>
+            <h1 id="question">
+        
+        </h1>
+      <h1 id="error">
+        
+        </h1>
+      <h1 id="x">
+        
+        </h1>
+      <h1 id="tmam">
+        
+        </h1>
+  </body>
+    <script>
+   function myFunc1() {
+
+      var myInput = document.getElementById("a7a").value;
+
+      var answer = document.getElementById("answer");
+      var question = document.getElementById("question");
+      var error = document.getElementById("error");
+      var x = document.getElementById("x");
+      var tmam = document.getElementById("tmam");
+if(!myInput) return answer.innerHTML = "Failed calculator this!"
+fetch(('https://apigroup.glitch.me/calculator/') , {method: 'post', body: JSON.stringify({"cal": myInput}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+
+  let ones = await one.json();
+if(ones.message === "Failed" && ones.number === "0001"){
+  answer.innerHTML = "Failed calculator this!"
+      question.innerHTML = `Error In "${ones.error}"`
+      error.innerHTML = "❎ " + ones.x
+     x.innerHTML = "✅ " + ones.on
+     tmam.innerHTML = ""
+return;
+}
+if(ones.message === "Failed" && ones.number === "0002"){
+  answer.innerHTML = "Failed calculator this!"
+      question.innerHTML = `Error In "${ones.error}"`
+      error.innerHTML = "❎ " + ones.x
+     x.innerHTML = "✅ " + ones.on
+     tmam.innerHTML = ""
+return;
+}
+if(ones.message === "Failed" && ones.number === "0003"){
+  answer.innerHTML = "Failed calculator this!"
+      question.innerHTML = `Error In "${ones.error}"`
+      error.innerHTML = "❎ " + ones.x
+     x.innerHTML = "✅ " + ones.on
+     tmam.innerHTML = ""
+return;
+}
+if(ones.message === "Failed" && ones.number === "0004"){
+  answer.innerHTML = "Failed calculator this!"
+      question.innerHTML = "For calculator Length +3"
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+return;
+}
+if(ones.message === "Failed" && ones.number === "0005"){
+  answer.innerHTML = "Failed calculator this!"
+      question.innerHTML = "This calculator Has Not Find!"
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+return;
+}
+if(ones.message === "Failed" && ones.number === "0006"){
+  answer.innerHTML = "Failed calculator this!"
+      question.innerHTML = "calculator undefined!"
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+return;
+}
+
+if(ones.message === "Failed" && ones.number === "0007"){
+  answer.innerHTML = "Failed calculator this!"
+      question.innerHTML = "Limited Length!"
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+return;
+}
+if(ones.message === "Failed" && ones.number === "0008"){
+  answer.innerHTML = "Failed calculator this!"
+      question.innerHTML = "Limited Length!"
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+return;
+}
+  answer.innerHTML = ones.question + " = " + ones.answer
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+})
+    }
+  
+  </script>
+</html>

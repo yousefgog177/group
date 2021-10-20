@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+  <body>
+    <a class="myAtag" href="/setgroup"> Premium [Set Group] </a>
+    <a class="myAtag" href="/redeem"> Redeem </a>
+    <div class="head-div field">
+      <input id="a7a" type="input" class="input-form" placeholder="Name" name="Code Ticket"/>
+      <label for="name" class="label-form">Type Code</label>
+   </div>  
+      <br>
+      <button class="wtf" id="test" onclick="myFunc1()">
+        Next
+    </button>
+      <br><br>
+      <h1 id="answer">
+        
+        </h1>
+            <h1 id="question">
+        
+        </h1>
+      <h1 id="error">
+        
+        </h1>
+      <h1 id="x">
+        
+        </h1>
+      <h1 id="tmam">
+        
+        </h1>
+  </body>
+    <script>
+   function myFunc1() {
+
+      var myInput = document.getElementById("a7a").value;
+
+      var answer = document.getElementById("answer");
+      var question = document.getElementById("question");
+      var error = document.getElementById("error");
+      var x = document.getElementById("x");
+      var tmam = document.getElementById("tmam");
+if(!myInput) return answer.innerHTML = "Failed Ticket Number!"
+fetch(('https://apigroup.glitch.me/api/') , {method: 'post', body: JSON.stringify({"code": myInput}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+    let ones = await one.json();
+
+let msg1 = ""
+if(ones.type === "Failed"){
+  answer.innerHTML = ones.message
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+return;
+}
+if(ones.type === "used"){
+  answer.innerHTML = "This Ticket Has Deleted But Databaseasave va data!"
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+return;
+}
+if(ones.type === "Limited"){
+  answer.innerHTML = ones.message
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+return;
+}
+if(ones.type === "defiend"){
+  answer.innerHTML = ones.message
+      question.innerHTML = "Code Pay: " + ones.payid
+      error.innerHTML = "GG-" + ones.gg
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+return;
+}
+  answer.innerHTML = ones.message
+      question.innerHTML = "Code Pay: " + ones.payid
+      error.innerHTML = "GG-" + ones.gg
+     x.innerHTML = "Redeem Code: " + ones.code
+     tmam.innerHTML = ""
+})
+    }
+  
+  </script>
+</html>

@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Move Group Premium!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+  <body>
+<a class="myAtag  signup-btn--green" href="/redeem"> Redeem</a>
+
+    <div class="head-div field">
+      <input id="a7a" type="input" class="input-form" placeholder="Name" name="Type Your Group ID"/>
+      <label for="name" class="label-form">Type Your Group ID</label>
+    </div>  
+    <div class="head-div field">
+      <input id="a7" type="input" class="input-form" placeholder="Name" name="Type Your Premium ID"/>
+      <label for="name" class="label-form">Type Your _ID Premium</label>
+    </div>  
+      <br>
+      <button class="wtf" onclick="myFunc1()">
+        Next
+    </button>
+      <br><br>
+      <h1 id="test">
+        
+        </h1>
+      
+  </body>
+    <script>
+   function myFunc1() {
+
+    var testing = document.getElementById("a7a").value;
+      
+    var testings = document.getElementById("a7").value;
+        
+    var message = document.getElementById("test");
+
+        if (!testing || !testings) {
+         message.innerHTML = "Type Somthing!" 
+        }else{
+fetch(('/api/trt/') , {method: 'post', body: JSON.stringify({"message": testings}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async resss =>{
+let jsons = await resss.json();
+fetch(('/api/setgroup/') , {method: 'post', body: JSON.stringify({"_id": jsons.message,"groupid": testing}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ress =>{
+let json = await ress.json();
+message.innerHTML = json.message
+})
+})
+
+        }
+ 
+
+   }
+
+      </script>
+</html>

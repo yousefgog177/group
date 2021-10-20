@@ -1,0 +1,70 @@
+
+<html>
+
+  <head>
+    <meta charset="utf-8"/>
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head> 
+
+  <body>
+    <a class="myAtag" href="/setgroup"> Premium [Set Group] </a>
+    <a class="myAtag" href="/redeem"> Redeem </a>
+    <div class="head-div field">
+      <textarea id="a7a" class="chat" placeholder="Name" name="Developer</>"></textarea>
+       <!-- <label for="name" class="message">Type Something</label> -->
+   </div>  
+      <br>
+      <button class="next" id="test" onclick="myFunc1()" onchange="test()">
+        Edit
+    </button>
+
+
+
+      <br><br>
+      <textarea readonly class="test" id="name">
+        
+        </textarea>
+   <textarea readonly class="test" id="des">
+        </textarea>
+
+
+    
+  </body>
+    <script>
+      var dess = document.getElementById("des");
+
+      var names = document.getElementById("name");
+
+
+
+let messageas;
+const websocket = new WebSocket("wss://apigroup.glitch.me/");
+
+      var names = document.getElementById("name");
+
+ fetch(('https://apigroup.glitch.me/groups/') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+  let oness = await onea.json();
+
+if(oness.message === "No Login") return name.innerHTML = "Login Failed!"
+names.innerHTML = "Your Groups: \n " + oness.groupid 
+dess.innerHTML = "Enter ID Group!"
+ })
+   function myFunc1() {
+
+      var myInput = document.getElementById("a7a").value;
+if(!myInput) return;
+ fetch(('https://apigroup.glitch.me/fetch-group/') , {method: 'post', body: JSON.stringify({"id": myInput}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+  let oness = await onea.json();
+if(oness.fetch === false) return dess.innerHTML = "Join Group And Again!" 
+window.location = "https://apigroup.glitch.me/dashboard"
+ })
+   }
+
+
+
+
+  </script>
+</html>

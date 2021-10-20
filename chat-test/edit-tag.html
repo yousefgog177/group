@@ -1,0 +1,129 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  </head>
+  <body>
+    <div class="head-div field">
+    <br><br>
+      <input id="a7a" type="text" class="input-form" placeholder="" name="New Tag"/>
+      <label for="name" class="label-form">Type Tag</label>
+      <br><br>
+    <div class="head-div field">
+      <br>
+            <i class="far fa-eye" id="test3"></i>
+      <input id="a7" type="password" maxlength="15" class="input-form" placeholder="" name="Password"/>
+      <label for="name" class="label-form">Type Your Paasword</label>
+   </div>  
+      <br>
+      <button class="wtf" id="test" onclick="myFunc1()">
+        Next
+    </button>
+      <br><br>
+      <h1 id="answer">
+        
+        </h1>
+            <h1 id="question">
+        
+        </h1>
+      <h1 id="error">
+        
+        </h1>
+      <h1 id="x">
+        
+        </h1>
+      <h1 id="tmam">
+        
+        </h1>
+    </div>
+  </body>
+    <script>
+var able = true
+var me = ``
+var error = ``
+fetch(('/api/data/@me') , {method: 'GET', headers: {'authorization': localStorage.getItem('token'),'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).catch(err =>{
+able = false
+error = err
+}).then(async res =>{
+if(!able) return swal("Error", "Internet connection failed\n" + error, "error")
+  let json = await res.json();
+if(json.message === "No Login"){
+localStorage.removeItem('token');
+window.location = "/login"
+}
+wait = false
+if(json.message === "No Login") datas = false
+if(json.message === "No Login") return swal('Error', 'Failed Login', 'error')
+if(json.message === 'This account has been disabled. Please check your e-mail.'){
+me = { username: 'disabled', discriminator: 'disabled' }
+ window.location = "https://apigroup.glitch.me/logout/"
+
+ return swal('Error', 'This account has been disabled. Please check your e-mail.', 'error')
+}
+me = {username: json.username, discriminator: json.discriminator, token: json.token}
+ })//'authorization': me.token,
+   function myFunc1() {
+if(!me) return swal('Error', 'Waiting to get data', 'error') 
+
+      var myInput = document.getElementById("a7a").value;
+      var myInputs = document.getElementById("a7").value;
+
+      var answer = document.getElementById("answer");
+      var question = document.getElementById("question");
+      var error = document.getElementById("error");
+      var x = document.getElementById("x");
+      var tmam = document.getElementById("tmam");
+if(!myInput || !myInputs) return answer.innerHTML = "Enter Your Tag or password!"
+fetch(('/api/edit-tag/') , {method: 'post', body: JSON.stringify({"password": myInputs, "tag": myInput}), headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+
+  let ones = await one.json();
+if(ones.message === 'request authy'){
+ swal("Enter Please Code Authy", {
+  content: "input",
+})
+.then((value) => {
+fetch(('/api/edit-tag/') , {method: 'post', body: JSON.stringify({"password": myInputs, "tag": myInput}), headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+
+  let oness = await onea.json();
+if(oness.message === 'Done') return swal('success', 'Done', 'success')
+  answer.innerHTML = ones.message
+})
+ })
+ }
+  answer.innerHTML = ones.message
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+if(ones.message === "Done") window.location = "https://apigroup.glitch.me/settings"
+})
+    }
+  
+
+function myFunc2() {
+  var pass = document.getElementById("a7");
+  if (pass.type === "password") {
+    pass.type = "text";
+  } else {
+    pass.type = "password";
+  }
+}
+
+const togglePassword = document.querySelector('#test3');
+const password = document.querySelector('#a7');
+
+togglePassword.addEventListener('click', function (e) {
+
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+
+    this.classList.toggle('fa-eye-slash');
+});
+
+  </script>
+</html>

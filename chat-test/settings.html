@@ -1,0 +1,78 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>use Redeem Code!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+
+</style>
+  </head>
+  <body>
+    <div class="head-div field">
+    </div>  
+      <h1 id="code"></h1>      
+
+<button class="edit" onclick="location.href='https://apigroup.glitch.me/setting/edit-name' ">
+       Edit
+    </button>
+      <h1 id="ip"></h1> 
+      <button class="edit" id="test" onclick="myFunc1()">
+       Edit
+    </button>
+      <h1 id="joined"></h1>
+      <button class="edit" id="tests" onclick="myFunc1s()">
+       Edit
+    </button>
+      <h1 id="sub"></h1>
+      <button class="edit" id="testst" onclick="myFunc12()">
+       Edit
+    </button>
+      <h1 id="subs"></h1>
+
+    <script>
+ 
+    var code = document.getElementById("code"); 
+    var ip = document.getElementById("ip"); 
+    var joined = document.getElementById("joined"); 
+    var sub = document.getElementById("subs"); 
+          var gg = document.getElementById("sub"); 
+      var me = {}
+var able = true
+var error = ``
+fetch(('/api/data/@me') , {method: 'GET', headers: {'authorization': localStorage.getItem('token'),'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).catch(err =>{
+able = false
+error = err
+}).then(async res =>{
+if(!able) return swal("Error", "Internet connection failed\n" + error, "error")
+  let json = await res.json();
+if(json.message === "No Login"){
+localStorage.removeItem('token');
+window.location = "/login"
+}
+code.innerHTML = "Your Profile:"
+ip.innerHTML = `Name: ${json.username}`
+joined.innerHTML = `Tag: ${json.discriminator}`
+gg.innerHTML = `Password: xxxx`
+sub.innerHTML = `Authy`
+me = {username: json.username, discriminator: json.discriminator, token: json.token}
+})
+
+   function myFunc1() {
+if(!me) return swal('Error', 'Waiting to get data', 'error') 
+fetch(('/api/data/@me') , {method: 'get', headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ress =>{
+  let json = await ress.json();
+if(json.nitro === false && json.locked === false || json.nitro === "false" && json.locked === "false") return swal("Failed", "Only Nitro", "error")
+ window.location = "https://apigroup.glitch.me/setting/edit-tag"
+})
+   }
+      function myFunc1s() {
+ window.location = "https://apigroup.glitch.me/setting/edit-pass"
+
+   }
+      function myFunc12() {
+ window.location = "https://apigroup.glitch.me/setting/edit-authy"
+
+   }
+      </script>
+</body></html>

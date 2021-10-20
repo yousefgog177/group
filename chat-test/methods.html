@@ -1,0 +1,92 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>use Redeem Code!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <style>
+
+</style>
+  </head>
+  <body>
+    <div class="head-div field">
+    </div>  
+      <h1 id="code"></h1>      
+      <button class="wtf" id="test" onclick="myFunc1()">
+        Transaction History
+    </button>
+      <h1 id="ip"></h1> 
+ 
+      <h1 id="joined"></h1>
+      <h1 id="sub"></h1>
+
+    <script>
+var able = true
+var me = ``
+var error = ``
+fetch(('/api/data/@me') , {method: 'GET', headers: {'authorization': localStorage.getItem('token'),'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).catch(err =>{
+able = false
+error = err
+}).then(async res =>{
+if(!able) return swal("Error", "Internet connection failed\n" + error, "error")
+  let json = await res.json();
+if(json.message === "No Login"){
+localStorage.removeItem('token');
+window.location = "/login"
+}
+wait = false
+if(json.message === "No Login") datas = false
+if(json.message === "No Login") return swal('Error', 'Failed Login', 'error')
+if(json.message === 'This account has been disabled. Please check your e-mail.'){
+me = { username: 'disabled', discriminator: 'disabled' }
+ window.location = "https://apigroup.glitch.me/logout/"
+ return swal('Error', 'This account has been disabled. Please check your e-mail.', 'error')
+}
+me = {username: json.username, discriminator: json.discriminator, token: json.token}
+ //'authorization': me.token,
+    var code = document.getElementById("code"); 
+    var ip = document.getElementById("ip"); 
+    var joined = document.getElementById("joined"); 
+    var sub = document.getElementById("sub"); 
+fetch(('https://apigroup.glitch.me/api/method/@me') , {method: 'get', headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ress =>{
+  let jsons = await ress.json();
+
+ var msg = `Transaction History:`
+if(jsons.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+var msg = ``
+for(const data of jsons){
+msg = msg + `\n==========
+Status: ${data.status}
+Retailer: ${data.retailer}
+Card: (XXXX-XXXX-XXXX-${data.card})
+Tax: ${data.tax}
+Total Price: ${data.total}`
+}
+return swal("success", msg, "success")
+})
+
+   
+   function myFunc1() {
+fetch(('https://apigroup.glitch.me/api/method/@me') , {method: 'get', headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ress =>{
+  let jsonss = await ress.json();
+
+ var msg = `Transaction History:`
+if(jsonss.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+var msg = ``
+for(const data of jsonss){
+msg = msg + `\n==========
+Status: ${data.status}
+Retailer: ${data.retailer}
+Card: (XXXX-XXXX-XXXX-${data.card})
+Tax: ${data.tax}
+Total Price: ${data.total}`
+}
+return swal("success", msg, "success")
+})
+   
+   }
+ 
+})  
+      </script>
+</body></html>

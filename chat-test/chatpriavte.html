@@ -1,0 +1,169 @@
+
+<html>
+
+  <head>
+    <meta charset="utf-8"/>
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head> 
+
+  <body>
+    <a class="myAtag" href="/setgroup"> Premium [Set Group] </a>
+    <a class="myAtag" href="/redeem"> Redeem </a>
+    <div class="head-div field">
+      <textarea id="a7a" class="chat" placeholder="Name" name="Developer</>"></textarea>
+       <!-- <label for="name" class="message">Type Something</label> -->
+   </div>  
+      <br>
+      <button class="next" id="test" onclick="myFunc1()" onchange="test()">
+        Next
+    </button>
+
+
+
+      <br><br>
+      <textarea readonly class="test" id="name">
+        
+        </textarea>
+        <br>
+
+            <h1 id="des">
+        
+        </h1>
+      <h1 id="cool">
+        
+        </h1>
+
+    
+  </body>
+    <script>
+      var names = document.getElementById("name");
+
+var messages = `Loading`
+var all = ``
+var id = ``
+    setInterval(() => {
+
+if(messages === "Loading" || !all) return swal("Error", "Internet connection failed, try again", "error")
+    }, 15 * 1000)
+let messageas;
+const websocket = new WebSocket("wss://apigroup.glitch.me/");
+
+      var names = document.getElementById("name");
+ fetch(('/api/messagespriavte-limited=50') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+  let oness = await onea.json();
+if(oness.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(oness.message === "Your Account Need to verify for phone") return swal("Error", oness.message, "error")
+if(oness.messages === "missing permission") return names.innerHTML = ""
+if(messages === 'Loading') messages = ""
+for(const data of oness){
+messages = messages + `\n${data.author.username}#${data.author.discriminator}: ${data.content}`
+}
+names.innerHTML = messages
+if(oness.messages === "No login") return window.location = "https://apigroup.glitch.me/chatpriavte"
+ 
+ 
+ })
+fetch(('https://apigroup.glitch.me/api/data/@me') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async res =>{
+  let json = await res.json();
+if(json.message === "No Login") {
+messages = "Login Failed!"
+}else{
+id = json.id
+all = json.username + "#" + json.discriminator
+} 
+})
+    websocket.onopen = function(evt) { console.log("websocket up")}
+
+   websocket.onclose = function(evt) { window.location.replace("/chatpriavte"); }
+    websocket.onmessage = function(evt) {
+let data;
+try { data = JSON.parse(evt.data) } catch (e) {}
+if(!data) return;
+if(data.message === "user-delete") return;
+if(data.message === "Deleted"){
+messages = ''
+ fetch(('/api/messagespriavte-limited=50') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+  let oness = await onea.json();
+if(oness.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(oness.message === "Your Account Need to verify for phone") return swal("Error", oness.message, "error")
+if(oness.messages === "missing permission") return names.innerHTML = ""
+if(messages === 'Loading') messages = ""
+for(const data of oness){
+messages = messages + `\n${data.author.username}#${data.author.discriminator}: ${data.content}`
+}
+names.innerHTML = messages
+ })
+return;
+}
+
+if(messages.includes("Login Failed!")) return;
+if(all !== `${data.author.username}#${data.author.discriminator}` && data.id !== id) {
+fetch(('https://apigroup.glitch.me/api/data/@me') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async res =>{
+  let json = await res.json();
+if(json.message === "No Login") {
+messages = "Login Failed!"
+}else{
+messages = messages.split(all).join(json.username + "#" + json.discriminator)
+all = json.username + "#" + json.discriminator
+} 
+})
+}
+names.innerHTML = `${messages}\n${data.author.username}#${data.author.discriminator}: ${data.content}`
+messages = messages + `\n${data.author.username}#${data.author.discriminator}: ${data.content}`
+ }
+    
+    websocket.onerror = function(evt) { window.location.replace("/chatpriavte");}
+ 
+
+// /sweetalert
+
+   function myFunc1() {
+if(messages === 'Loading') messages = ""
+let wait = true
+    var myInput = document.getElementById("a7a").value;
+      var name = document.getElementById("name");
+
+     
+if (!myInput) {
+  swal("Error", "Can't send empty message", "error")
+}
+ 
+if(!myInput) return;
+if(messages.includes("Login Failed!")) return swal("Error", "Failed Getting Message Refresh", "error")
+if(!all) return swal("Error", "Internet connection failed, try again", "error")
+names.innerHTML = `${messages}\n${all}: ${myInput}`
+ fetch(('https://apigroup.glitch.me/api/send/') , {method: 'post', body: JSON.stringify({"type": 1,"message": myInput}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let ones = await one.json();
+wait = false
+if(ones.message === "No Login") messages = "Login Failed!"
+if(ones.message === "No Login") return name.innerHTML = "Login Failed!"
+if(ones.message === "Your Account Need to verify for phone") return swal("Error", ones.message, "error")
+if(ones.message === "No Message!") return swal("Error", "Can't send empty message", "error")
+if(ones.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(ones.message === "missing permission" && ones.none === "read_message") name.innerHTML = ""
+if(ones.message === "missing permission" && ones.none === "send_message") return swal("Error", "Your message could not be delivered. \nThis is usually because missing permission or edit not directly for API", "error")
+if(messages.includes("Login Failed!")) return swal("Error", "Failed Getting Message Refresh", "error")
+names.innerHTML = `${messages}`.replace(`${all}: ${myInput}`, `${all}: ${ones.content}`)
+//  name.innerHTML = ones.message
+/*   if(!ones.message.includes("API : the value 'message' must be found")) {
+ name.innerHTML = ones.message
+messageas = ones.message   
+} else {
+  name.innerHTML = "You must write 18 characters or above!"
+messageas = "ERROR" 
+} */
+ 
+ })
+    setInterval(() => {
+   if(wait === true){
+return swal("Error", "Internet connection failed, try again", "error")}
+    }, 6 * 1000)
+
+};
+ 
+
+  </script>
+</html>

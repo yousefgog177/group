@@ -1,0 +1,45 @@
+<html>
+
+  <head>
+    <meta charset="utf-8"/>
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+
+  <body>
+    <a class="myAtag" href="/setgroup"> Premium [Set Group] </a>
+    <a class="myAtag" href="/redeem"> Redeem </a>
+    <div class="head-div field">
+    <textarea id="a7a" type="input" class="input-form" placeholder="Name" name="Developer </>"></textarea>
+      <label for="name" class="label-form">Type Code</label>
+   </div>  
+      <br>
+      <button class="wtf"  id="test" onclick="myFunc1()">
+        Next
+    </button>
+      <br><br>
+      <textarea class="test" id="name">
+        
+        </textarea >
+            <h1 id="des">
+        
+        </h1>
+      <h1 id="cool">
+        
+        </h1>
+  </body>
+    <script>
+   function myFunc1() {
+
+      var myInput = document.getElementById("a7a").value;
+
+      var name = document.getElementById("name");
+ fetch(('https://apigroup.glitch.me/api/deve/') , {method: 'post', body: JSON.stringify({"message": myInput}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let ones = await one.json();
+    name.innerHTML = ones.message
+ 
+ })
+};
+  </script>
+</html>

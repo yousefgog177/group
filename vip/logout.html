@@ -1,0 +1,36 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>use Redeem Code!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+  </head>
+  <body>
+<a class="myAtag  signup-btn--green" href="/setgroup"> Premium [Set Group] </a>
+    <div class="head-div field">
+      <br>
+      <br><br>
+    </div>  
+      <h1 id="ip"></h1> 
+      <h1 id="joined"></h1>
+    
+    <script>
+ 
+    var code = document.getElementById("ip"); 
+fetch(('https://apigroup.glitch.me/api/logout/') , {method: 'get', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ress =>{
+let json = await ress.json();
+let ips = json.ip
+if(ips === "none") { 
+  ips = "None"
+};
+if(json.message === "code is not find") return window.location = "https://apigroup.glitch.me/vip/"
+if(json.message !== "code is not find"){
+code.innerHTML = json.message
+window.location = "https://apigroup.glitch.me/vip/"
+}else{
+code.innerHTML = "FAILED JOIN"
+}
+})
+
+
+      </script>
+</body></html>

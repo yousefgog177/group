@@ -1,0 +1,679 @@
+
+<html>
+
+  <head>
+    <meta charset="utf-8"/>
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head> 
+
+  <body>
+    <a class="myAtag" href="/setgroup"> Premium [Set Group] </a>
+    <a class="myAtag" href="/redeem"> Redeem </a>
+    <div class="head-div field">
+      <textarea id="a7a" class="chat" placeholder="Name" name="Developer</>"></textarea>
+       <!-- <label for="name" class="message">Type Something</label> -->
+
+   </div>  
+      <br>
+      <button class="next" id="test" onclick="myFunc1()" onchange="test()">
+        Next
+    </button>
+
+
+
+      <br>
+      <div style="width:850px; height:300;" readonly class="test" id="name">
+          
+        </div>  
+<br><br><br>
+
+        <br>
+
+            <h1 id="des">
+        
+        </h1>
+      <h1 id="cool">
+        
+        </h1>
+
+
+  </body>
+    <script>
+
+var num = 1
+var me = ``
+var wait = false
+var wifi = false
+var cantuse = false
+var messages = []
+var texting = ``
+var nameto = ``
+var ids2 = []
+var ids = []
+var datas = true
+
+      var names = document.getElementById("name");
+names.innerHTML = `Connection...`
+wait = true
+var able = true
+var error = ``
+fetch(('/api/data/@me') , {method: 'GET', headers: {'authorization': localStorage.getItem('token'),'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).catch(err =>{
+able = false
+error = err
+}).then(async res =>{
+if(!able) return swal("Error", "Internet connection failed\n" + error, "error")
+names.innerHTML = `Connection..`
+  let json = await res.json();
+
+wait = false
+if(json.message === "No Login") datas = false
+if(json.message === "No Login"){
+localStorage.removeItem('token');
+window.location = "/login"
+}
+if(json.message === "No Login") return swal('Error', 'Failed Login', 'error')
+if(json.message === 'This account has been disabled. Please check your e-mail.'){
+ window.location = "https://apigroup.glitch.me/logout/"
+me = { username: 'disabled', discriminator: 'disabled' }
+ return swal('Error', 'This account has been disabled. Please check your e-mail.', 'error')
+}
+me = {username: json.username, discriminator: json.discriminator, token: json.token, channel: json.channel}
+names.innerHTML = `Connection.`
+ 
+
+
+names.innerHTML = `Connection...`
+wait = true
+ fetch(('https://apigroup.glitch.me/api/v1/messageslimited=50') , {method: 'GET', headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).catch(err =>{
+able = false
+error = err
+}).then(async onea =>{
+if(!able) return swal("Error", "Internet connection failed\n" + error, "error")
+names.innerHTML = `Connection..`
+  let json = await onea.json();
+names.innerHTML = `Connection.`
+wait = false
+if(json.message === "No Login") datas = false
+if(json.message === "No Login"){
+localStorage.removeItem('token');
+window.location = "/login"
+}
+if(json.message === "No Login") return swal('Error', 'Failed Login', 'error')
+if(json.message === 'This account has been disabled. Please check your e-mail.'){
+ names.innerHTML = `This account has been disabled. Please check your e-mail.`
+ window.location = "https://apigroup.glitch.me/logout/"
+me = { username: 'disabled', discriminator: 'disabled' }
+ return swal('Error', 'This account has been disabled. Please check your e-mail.', 'error')
+}
+if(json.message === "Your Account Need to verify for phone") return swal("Error", json.message, "error")
+if(json.messages === "missing permission"){
+ swal("Error", json.messages, "error")
+ return names.innerHTML = ""
+}
+for(const data of json){
+let newmessage = data.content
+for(const datas of data.mention_user){
+newmessage = newmessage.replace(`<@${datas.id}>`, `${datas.username}`)
+}
+ids2.unshift({id: data.id, username: data.author.username, discriminator: data.author.discriminator, content: newmessage})
+}
+
+for(const data of ids2){
+ids.unshift({id: data.id, username: data.username, discriminator: data.discriminator, content: data.content})
+}
+
+for(const data of ids){
+ nameto = nameto + `\n${data.username}#${data.discriminator}: ${data.content}<br>`
+}
+
+names.innerHTML = nameto
+ })
+})
+let websocket = new WebSocket("wss://apigroup.glitch.me/");
+
+  
+    websocket.onopen = function(evt) { console.log("websocket up")}
+setInterval(async ()=>{
+   websocket.onclose = function(evt) { 
+var dngg = false
+setInterval(async ()=>{
+if(dngg) return;
+dngg = true
+websocket = new WebSocket("wss://apigroup.glitch.me/");
+    websocket.onmessage = function(evt) {
+let data;
+try { data = JSON.parse(evt.data) } catch (e) {}
+if(!data) return;
+if(data.channel.name !== me.channel) return;
+if(data.message === 'success'){
+
+if(me.username === 'disabled') return;
+
+nameto = ``
+var fetchs = false
+
+for(const datas of ids){
+if(data.id === datas.id) fetchs = true
+}
+if(fetchs === true) return;
+let newmessage = data.content
+for(const datas of data.mention_user){
+newmessage = newmessage.replace(`<@${datas.id}>`, `${datas.username}`)
+}
+ids2.unshift({id: data.id, username: data.author.username, discriminator: data.author.discriminator, content: newmessage})
+  
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+return names.innerHTML = nameto
+}
+if(data.message === "Deleted"){
+
+if(me.username === 'disabled') return;
+
+nameto = ``
+
+for(const datas of data.id){
+for(const rows of ids2){
+if(rows.id === datas) ids2.shift({id: rows.id, username: rows.username, discriminator: rows.discriminator, content: rows.content})
+}
+}
+
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+return names.innerHTML = nameto
+
+
+}
+
+if(data.message === "edit"){
+
+if(me.username === 'disabled') return;
+
+nameto = ``
+
+for(const rows of ids2){
+if(rows.id === data.id){
+rows['content'] = data.content
+} 
+}
+
+
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+return names.innerHTML = nameto
+
+}
+    }
+}, 3000)
+}
+}, 5000)
+    websocket.onmessage = function(evt) {
+let data;
+try { data = JSON.parse(evt.data) } catch (e) {}
+if(!data) return;
+if(data.channel.name !== me.channel) return;
+if(data.message === 'success'){
+
+if(me.username === 'disabled') return;
+
+nameto = ``
+var fetchs = false
+
+for(const datas of ids){
+if(data.id === datas.id) fetchs = true
+}
+if(fetchs === true) return;
+let newmessage = data.content
+for(const datas of data.mention_user){
+newmessage = newmessage.replace(`<@${datas.id}>`, `${datas.username}`)
+}
+ids2.unshift({id: data.id, username: data.author.username, discriminator: data.author.discriminator, content: newmessage})
+  
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+return names.innerHTML = nameto
+}
+if(data.message === "Deleted"){
+
+if(me.username === 'disabled') return;
+
+nameto = ``
+
+for(const datas of data.id){
+for(const rows of ids2){
+if(rows.id === datas) ids2.shift({id: rows.id, username: rows.username, discriminator: rows.discriminator, content: rows.content})
+}
+}
+
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+return names.innerHTML = nameto
+
+
+}
+
+if(data.message === "edit"){
+
+if(me.username === 'disabled') return;
+
+nameto = ``
+
+for(const rows of ids2){
+if(rows.id === data.id){
+rows['content'] = data.content
+} 
+}
+
+
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+return names.innerHTML = nameto
+
+}
+    }
+setInterval(async ()=>{
+    websocket.onerror = function(evt) { 
+var dngg = false
+setInterval(async ()=>{
+if(dngg) return;
+dngg = true
+websocket = new WebSocket("wss://apigroup.glitch.me/");
+    websocket.onmessage = function(evt) {
+let data;
+try { data = JSON.parse(evt.data) } catch (e) {}
+if(!data) return;
+if(data.channel.name !== me.channel) return;
+if(data.message === 'success'){
+
+if(me.username === 'disabled') return;
+
+nameto = ``
+var fetchs = false
+
+for(const datas of ids){
+if(data.id === datas.id) fetchs = true
+}
+if(fetchs === true) return;
+let newmessage = data.content
+for(const datas of data.mention_user){
+newmessage = newmessage.replace(`<@${datas.id}>`, `${datas.username}`)
+}
+ids2.unshift({id: data.id, username: data.author.username, discriminator: data.author.discriminator, content: newmessage})
+  
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+return names.innerHTML = nameto
+}
+if(data.message === "Deleted"){
+
+if(me.username === 'disabled') return;
+
+nameto = ``
+
+for(const datas of data.id){
+for(const rows of ids2){
+if(rows.id === datas) ids2.shift({id: rows.id, username: rows.username, discriminator: rows.discriminator, content: rows.content})
+}
+}
+
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+return names.innerHTML = nameto
+
+
+}
+
+if(data.message === "edit"){
+
+if(me.username === 'disabled') return;
+
+nameto = ``
+
+for(const rows of ids2){
+if(rows.id === data.id){
+rows['content'] = data.content
+} 
+}
+
+
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+return names.innerHTML = nameto
+
+}
+    }
+}, 3000)
+}
+}, 5000) 
+
+   function myFunc1() {
+
+if(!me) return swal("Error", "Wait To Get Data", "error")
+if(!datas) return swal("Error", "Failed Login", "error")
+
+    var myInput = document.getElementById("a7a").value;
+a7a.value = '';
+
+    var nomessage = myInput.split(' ').join('')
+
+if (!myInput || !nomessage) {
+  return swal("Error", "Can't send empty message", "error")
+}
+nameto = ``
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+names.innerHTML = `${nameto}\n${me.username}#${me.discriminator}: ${myInput} (PENDING)`
+var able = true
+var error = ``
+ fetch(('https://apigroup.glitch.me/api/v1/sendchat') , {method: 'post', body: JSON.stringify({"type": 1,"message": myInput}), headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).catch(err =>{
+able = false
+error = err
+}).then(async one =>{
+nameto = ``
+ids = []
+for(const datas of ids2){
+ids.unshift({id: datas.id, username: datas.username, discriminator: datas.discriminator, content: datas.content})
+}
+
+for(const datas of ids){
+ nameto = nameto + `\n${datas.username}#${datas.discriminator}: ${datas.content}<br>`
+}
+
+names.innerHTML = `${nameto}`
+if(!able) return swal("Error", "Internet connection failed\n" + error, "error")
+  let json = await one.json();
+if(json.message === "No Login") datas = false
+if(json.message === "No Login"){
+localStorage.removeItem('token');
+window.location = "/login"
+}
+if(json.message === "No Login") return name.innerHTML = "Login Failed!"
+if(json.message === 'This account has been disabled. Please check your e-mail.'){
+ window.location = "https://apigroup.glitch.me/logout/" 
+return swal("Error", json.message, "error")
+}
+if(json.message === "Your Account Need to verify for phone"){
+ return swal("Error", json.message, "error")
+}
+if(json.message === "No Message!") return swal("Error", "Can't send empty message", "error")
+if(json.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(json.message === "missing permission") return swal("Error", "Your message could not be delivered. \nThis is usually because missing permission or edit not directly for API", "error")
+nameto = ``
+var fetchs = false
+
+for(const datas of ids){
+if(json.id === datas.id) fetchs = true
+}
+if(fetchs === true) return;
+let newmessage = json.content
+for(const datas of json.mention_user){
+newmessage = newmessage.replace(`<@${datas.id}>`, `${datas.username}`)
+}
+ids2.unshift({id: json.id, username: json.author.username, discriminator: json.author.discriminator, content: newmessage})
+ids = []
+for(const data of ids2){
+ids.unshift({id: data.id, username: data.username, discriminator: data.discriminator, content: data.content})
+}
+
+for(const data of ids){
+ nameto = nameto + `\n${data.username}#${data.discriminator}: ${data.content}<br>`
+}
+names.innerHTML = nameto 
+})
+   }
+/*
+var messages = `Loading`
+var all = ``
+var failed = false
+var failedjoin = 0
+var id = ``
+var gg = false
+var wait = false
+    setInterval(() => {
+if(wait === true){
+failedjoin = failedjoin + 1
+if(failedjoin > 2){
+ swal("Error", "Internet connection failed, try again Or You Have Spam Message", "error")
+names.innerHTML = `Connection..`
+gg = true
+
+ fetch(('https://apigroup.glitch.me/api/wifi') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+  let oness = await onea.json();
+wait = false
+gg = false
+failed = false
+failedjoin = 0
+names.innerHTML = messages
+ })
+}}
+    }, 4 * 1000)
+    setInterval(() => {
+failed = true
+if(messages === "Loading" || !all) return swal("Error", "Internet connection failed, try again", "error")
+    }, 15 * 1000)
+let messageas;
+const websocket = new WebSocket("wss://apigroup.glitch.me/");
+
+      var names = document.getElementById("name");
+wait = true
+ fetch(('https://apigroup.glitch.me/api/messageslimited=50') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+  let oness = await onea.json();
+wait = false
+if(oness.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(oness.message === "Your Account Need to verify for phone") return swal("Error", oness.message, "error")
+if(oness.messages === "missing permission"){
+ swal("Error", oness.messages, "error")
+ return names.innerHTML = ""
+}
+if(messages === 'Loading') messages = ""
+for(const data of oness){
+
+if(data.content.startsWith('https://apigroup.glitch.me/join/')){ messages = messages + `\n${data.author.username}#${data.author.discriminator}: 
+${data.content}
+================
+Join Now [${data.content.slice(32 , 38)}]
+================`
+}
+if(!data.content.startsWith('https://apigroup.glitch.me/join/')) messages = messages + `\n${data.author.username}#${data.author.discriminator}: ${data.content}`
+}
+names.innerHTML = messages
+if(oness.messages === "No login") return window.location = "https://apigroup.glitch.me/chat"
+ 
+ 
+ })
+wait = true
+fetch(('https://apigroup.glitch.me/api/data/@me') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async res =>{
+  let json = await res.json();
+wait = false
+if(json.message === "No Login") {
+messages = "Login Failed!"
+}else{
+all = json.username + "#" + json.discriminator
+id = json.id
+} 
+})
+    websocket.onopen = function(evt) { console.log("websocket up")}
+   websocket.onclose = function(evt) { window.location.replace("/chat"); }
+    websocket.onmessage = function(evt) {
+let data;
+try { data = JSON.parse(evt.data) } catch (e) {}
+if(!data) return;
+if(data.message === "user-delete") return;
+if(data.message === "Deleted"){
+messages = []//split
+ fetch(('https://apigroup.glitch.me/api/messageslimited=50') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+  let oness = await onea.json();
+if(oness.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(oness.message === "Your Account Need to verify for phone") return swal("Error", oness.message, "error")
+if(oness.messages === "missing permission") return names.innerHTML = ""
+if(messages === 'Loading') messages = ""
+for(const data of oness){
+messages = messages + `\n${data.author.username}#${data.author.discriminator}: ${data.content}`
+}
+names.innerHTML = messages
+ })
+return;
+}
+if(data.message === "edit"){
+messages = []//split
+ fetch(('https://apigroup.glitch.me/api/messageslimited=50') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+  let oness = await onea.json();
+if(oness.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(oness.message === "Your Account Need to verify for phone") return swal("Error", oness.message, "error")
+if(oness.messages === "missing permission") return names.innerHTML = ""
+if(messages === 'Loading') messages = ""
+for(const data of oness){
+messages = messages + `\n${data.author.username}#${data.author.discriminator}: ${data.content}`
+}
+names.innerHTML = messages
+ })
+return;
+}
+if(messages.includes("Login Failed!")) return;
+if(all !== `${data.author.username}#${data.author.discriminator}` && data.id === id) {
+wait = true
+fetch(('https://apigroup.glitch.me/api/data/@me') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async res =>{
+  let json = await res.json();
+wait = false
+if(json.message === "No Login") {
+messages = "Login Failed!"
+}else{
+messages = messages.split(all).join(json.username + "#" + json.discriminator)
+all = json.username + "#" + json.discriminator
+} 
+})
+}
+names.innerHTML = `${messages}\n${data.author.username}#${data.author.discriminator}: ${data.content}`
+if(!data.content.startsWith('https://apigroup.glitch.me/join/')) return messages = messages + `\n${data.author.username}#${data.author.discriminator}: ${data.content}`
+messages = messages + `\n${data.author.username}#${data.author.discriminator}:
+${data.content}
+================
+Join Now [${data.content.slice(32 , 38)}]
+================
+` 
+}
+    
+    websocket.onerror = function(evt) { window.location.replace("/chat");}
+  
+
+// /sweetalert
+
+   function myFunc1() {
+if(gg === true) return swal("Error", "Internet connection failed, try again", "error")
+if(messages === 'Loading') messages = ""
+    var myInput = document.getElementById("a7a").value;
+      var name = document.getElementById("name");
+
+     
+if (!myInput) {
+  swal("Error", "Can't send empty message", "error")
+}
+ 
+if(!myInput) return;
+if(messages.includes("Login Failed!")) return swal("Error", "Failed Getting Message Refresh", "error")
+if(!all) {
+names.innerHTML = `Connection..`
+failed = true
+ return swal("Error", "Internet connection failed, try again", "error")
+}
+ wait = true
+names.innerHTML = `${messages}\n${all}: ${myInput} (PENDING)`
+ fetch(('https://apigroup.glitch.me/api/sendchat/') , {method: 'post', body: JSON.stringify({"type": 1,"message": myInput}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let ones = await one.json();
+wait = false
+if(ones.message === "No Login") messages = "Login Failed!"
+if(ones.message === "No Login") return name.innerHTML = "Login Failed!"
+if(ones.message === "Your Account Need to verify for phone") return swal("Error", ones.message, "error")
+if(ones.message === "No Message!") return swal("Error", "Can't send empty message", "error")
+if(ones.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(ones.message === "missing permission") swal("Error", "Your message could not be delivered. \nThis is usually because missing permission or edit not directly for API", "error")
+if(ones.message === "missing permission") return names.innerHTML = messages
+if(messages.includes("Login Failed!")) return swal("Error", "Failed Getting Message Refresh", "error")
+names.innerHTML = `${messages}`.replace(`${all}: ${myInput}`, `${all}: ${ones.content}`)
+//  name.innerHTML = ones.message
+/*   if(!ones.message.includes("API : the value 'message' must be found")) {
+ name.innerHTML = ones.message
+messageas = ones.message   
+} else {
+  name.innerHTML = "You must write 18 characters or above!"
+messageas = "ERROR" 
+} */
+// })
+// }
+ 
+
+  </script>
+</html>

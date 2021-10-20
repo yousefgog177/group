@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+  </head>
+  <body>
+    <div class="head-div field">
+    <br><br>
+      <input id="a7a" type="textarea" class="input-form" placeholder="" name="Code"/>
+      <label for="name" class="label-form">Type Your Code To Redeem</label>
+      <br><br>
+    <div class="head-div field">
+      <br>
+            <i class="far fa-eye" id="test3"></i>
+      <input id="a7" type="password" maxlength="15" class="input-form" placeholder="" name="Password"/>
+      <label for="name" class="label-form">Type Your Paasword</label>
+   </div>  
+      <br>
+      <button class="wtf" id="test" onclick="myFunc1()">
+        Next
+    </button>
+      <br><br>
+      <h1 id="answer">
+        
+        </h1>
+            <h1 id="question">
+        
+        </h1>
+      <h1 id="error">
+        
+        </h1>
+      <h1 id="x">
+        
+        </h1>
+      <h1 id="tmam">
+        
+        </h1>
+    </div>
+  </body>
+    <script>
+   function myFunc1() {
+
+      var myInput = document.getElementById("a7a").value;
+      var myInputs = document.getElementById("a7").value;
+
+      var answer = document.getElementById("answer");
+      var question = document.getElementById("question");
+      var error = document.getElementById("error");
+      var x = document.getElementById("x");
+      var tmam = document.getElementById("tmam");
+if(!myInput || !myInputs) return answer.innerHTML = "Enter Your Code or password!"
+fetch(('https://apigroup.glitch.me/api/testcode/') , {method: 'post', body: JSON.stringify({"code": myInput, "password": myInputs}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+
+  let ones = await one.json();
+if(ones.message !== "code is not defind") window.location = "https://apigroup.glitch.me/vip/manager"
+  answer.innerHTML = ones.message
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+})
+    }
+  
+
+function myFunc2() {
+  var pass = document.getElementById("a7");
+  if (pass.type === "password") {
+    pass.type = "text";
+  } else {
+    pass.type = "password";
+  }
+}
+
+const togglePassword = document.querySelector('#test3');
+const password = document.querySelector('#a7');
+
+togglePassword.addEventListener('click', function (e) {
+
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+
+    this.classList.toggle('fa-eye-slash');
+});
+
+  </script>
+</html>

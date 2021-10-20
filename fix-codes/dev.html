@@ -1,0 +1,110 @@
+<html>
+
+  <head>
+    <meta charset="utf-8"/>
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head> 
+
+  <body>
+    <a class="myAtag" href="/setgroup"> Premium [Set Group] </a>
+    <a class="myAtag" href="/redeem"> Redeem </a>
+    <div class="head-div field">
+    <textarea id="a7a" type="input" class="input-form" placeholder="Name" name="Developer </>"></textarea>
+      <label for="name" class="label-form">Type Code</label>
+   </div>  
+      <br>
+      <button class="wtf" id="test" onclick="myFunc1()">
+        Next
+    </button>
+
+
+
+      <br><br>
+      <textarea readonly class="test" id="name">
+        
+        </textarea>
+        <br>
+    <button class="wtf" onclick="myFunc2()">Copy text</button>
+
+            <h1 id="des">
+        
+        </h1>
+      <h1 id="cool">
+        
+        </h1>
+
+    
+  </body>
+    <script>
+let messageas;
+   function myFunc1() {
+
+    var myInput = document.getElementById("a7a").value;
+      var name = document.getElementById("name");
+
+if(!myInput) {
+  swal("Error", "Type Somthing!", "error")
+}  
+// limited api: 25000 + | testing: 25000
+ fetch(('https://apigroup.glitch.me/get_ip/') , {method: 'GET', headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async two =>{
+  let twos = await two.json();
+ fetch(('https://apigroup.glitch.me/fetch_vip/') , {method: 'post', body: JSON.stringify({"ip": twos.ip}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async three =>{
+  let threes = await three.json();
+if(myInput.length > 15000 && threes.vip === false){
+swal("Error", "Max Length 15000 || VIP User Only Can 25000 Length", "error")
+name.innerHTML = "Max Length 15000 || VIP User Only Can 25000 Length"
+messageas = "ERROR"
+messageas = "-!*%*(!/f&"
+return;
+}
+if(myInput.length > 25000){
+swal("Error", "Max Length 25000", "error")
+name.innerHTML = "Max Length 25000"
+messageas = "-*-8*!s/f&"
+return;
+}
+ fetch(('https://apigroup.glitch.me/api/dev/') , {method: 'post', body: JSON.stringify({"message": myInput}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let ones = await one.json();
+
+    if(!ones.message.includes("API : the value 'message' must be found") && ones.message.length > 17) {
+name.innerHTML = ones.message
+messageas = ones.message
+} else {
+swal("Error", "You must write 18 characters or above!", "error")
+name.innerHTML = "You must write 18 characters or above!"
+messageas = "ERROR" 
+} 
+ })
+ })
+ })
+};
+
+function myFunc2() {
+  var name = document.getElementById("name");
+  
+    var myInput = document.getElementById("a7a").value;
+if(messageas === "-*-8*!s/f&") return swal("Error", "Max Length 25k", "error")
+if(messageas === "-!*%*(!/f&") return swal("Error", "Max Length 15k || VIP User 25k", "error")
+if (name.value.length < 17 || messageas.length < 17) {
+ swal("Error", "You must write 18 characters or above", "error")
+} else if (!messageas || name.value.length <= 17) { 
+      swal("Error", "Type Somthing", "error");
+    } else {
+
+  name.select();
+  name.setSelectionRange(0, 99999); 
+
+  document.execCommand("copy");
+
+  swal("Done", "Copy To clipboard" + "\n" + "\n" + name.value, "success");
+    }
+}
+
+
+
+  
+  </script>
+</html>

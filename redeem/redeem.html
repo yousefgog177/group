@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>use Redeem Code!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+  <body>
+<a class="myAtag  signup-btn--green" href="/setgroup"> Premium [Set Group] </a>
+    <div class="head-div field">
+      <input id="a7a" type="input" class="input-form" placeholder="Name" name="Redeem Code"/>
+      <label for="name" class="label-form">Type Redeem</label>
+    </div>  
+    <div class="head-div field">
+      <input id="a7" type="input" class="input-form" placeholder="Name" name="ID Discord"/>
+      <label for="name" class="label-form">Type Your ID Discord</label>
+    </div>  
+      <br>
+      <button class="wtf" onclick="myFunc1()">
+        Next
+    </button>
+      <br><br>
+      <h1 id="test">
+        
+        </h1>
+      
+  </body>
+    <script>
+   function myFunc1() {
+
+    var testing = document.getElementById("a7a").value;
+      
+    var testings = document.getElementById("a7").value;
+        
+    var message = document.getElementById("test");
+
+        if (!testing || !testings) {
+         message.innerHTML = "Type Somthing!" 
+        }else{
+fetch(('/api/redeem/') , {method: 'post', body: JSON.stringify({"id": testings,"redeem": testing}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ress =>{
+
+let json = await ress.json();
+message.innerHTML = json.message
+})
+
+        }
+ 
+
+   }
+
+      </script>
+</html>

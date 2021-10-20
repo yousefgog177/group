@@ -1,0 +1,84 @@
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+
+  <body>
+    <a class="myAtag" href="/setgroup"> Premium [Set Group] </a>
+    <a class="myAtag" href="/redeem"> Redeem </a>
+    <div class="head-div field">
+    <textarea id="a7a" type="input" class="input-form" placeholder="Name" name="Search"></textarea>
+      <label for="name" class="label-form">Type search</label>
+   </div>  
+      <br>
+      <button class="wtf" onclick="myFunc1()">
+        Next
+    </button>
+      <br><br>
+      <h1 id="name">
+        
+        </h1>
+            <h1 id="des">
+        
+        </h1>
+      <h1 id="cool">
+        
+        </h1>
+  </body>
+    <script>
+   function myFunc1() {
+
+      var myInput = document.getElementById("a7a").value;
+
+      var name = document.getElementById("name");
+      var des = document.getElementById("des");
+      var cool = document.getElementById("cool");
+
+fetch(('https://apigroup.glitch.me/api/help/') , {method: 'post', body: JSON.stringify({"command": myInput}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+
+  let ones = await one.json();
+  if(ones.message === "You Have Limited!") {
+  name.innerHTML = "You Have Limited!"
+      des.innerHTML = ""
+      cool.innerHTM = ""
+return;
+}
+    if(ones.message === "i can't find this command.") {
+fetch(('https://apigroup.glitch.me/api/search/') , {method: 'post', body: JSON.stringify({"command": myInput}), headers: { 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async two =>{
+  let twos = await two.json();
+if(twos.message === "You Have Limited!") {
+  name.innerHTML = "You Have Limited!"
+      des.innerHTML = ""
+      cool.innerHTM = ""
+return;
+}
+if(twos.message === "Command Not Find!"){
+  name.innerHTML = "Command is defined!"
+      des.innerHTML = ""
+      cool.innerHTML = ""
+return;
+}else{
+fetch(('https://apigroup.glitch.me/api/help/') , {method: 'post', body: JSON.stringify({"command": twos.command}), headers: { 'authorization': 'skiptime', 'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async three =>{
+  let threes = await three.json();
+      name.innerHTML = "Name: " + threes.name
+      des.innerHTML = "Description: " + threes.description
+      cool.innerHTML = "Cooldown: " + threes.cooldown
+})
+}
+
+})
+
+    } else {
+      name.innerHTML = "Name: " + ones.name
+      des.innerHTML = "Description: " + ones.description
+      cool.innerHTML = "Cooldown: " + ones.cooldown
+    }
+  })
+};
+  </script>
+
+</html>
